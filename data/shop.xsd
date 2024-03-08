@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="emailType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"/> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="phoneType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[2-9](([0-9]{6})|([0-9]{9}))"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="passwordType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="6"></xs:minLength>
+            <xs:maxLength value="20"></xs:maxLength>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:element name="user">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="age" type="xs:int"/>
+                <xs:element name="phone" type="phoneType"/> 
+                <xs:element name="email" type="emailType"/>
+                <xs:element name="password" type="passwordType"  maxOccurs="unbounded"/>
+                <xs:element name="cart">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="0" ref="product"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+       
+    </xs:element>
+
+    <xs:element name="users">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="user"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="userEmail">
+            <xs:selector xpath="user"/>
+            <xs:field xpath="email"/>
+        </xs:key>
+        <xs:unique name="uniqueEmail">
+            <xs:selector xpath="user"/>
+            <xs:field xpath="email"/>
+          </xs:unique>
+    </xs:element>
+
+    <xs:element name="product">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="id" type="xs:string"/>
+                <xs:element name="des" type="xs:string"/>
+                <xs:element name="price" type="xs:positiveInteger"/>
+                <xs:element name="quantity" type="xs:positiveInteger"/>
+                <xs:element name="totalCartQuantity" type="xs:int"/>
+            </xs:sequence> 
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="products">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="product"></xs:element>
+            </xs:sequence>
+            
+        </xs:complexType>
+        <xs:key name="productId"  >
+            <xs:selector xpath="product"/>
+            <xs:field xpath="id"/>
+        </xs:key>
+    </xs:element>
+
+   
+    
+    
+
+    <xs:element name="shop">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="users"></xs:element>
+                <xs:element name="products"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

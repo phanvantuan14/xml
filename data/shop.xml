@@ -1,0 +1,71 @@
+<shop>
+    <users>
+        <user>
+            <name>leo2</name>
+            <age>32</age>
+            <phone>3135551212</phone>
+            <email>vantuanxyz741@gmail.com</email>
+            <password>1234565gyyg2</password>
+            <cart>
+               
+            </cart>
+        </user>
+
+
+        <user>
+            <name>Nguyen Van A</name>
+            <age>25</age>
+            <phone>3135551214</phone>
+            <email>abc@example.com</email>
+            <password>pass123</password>
+            <cart>
+                
+            </cart>
+        </user>
+    <user><name>leo3</name><age>2</age><password>password</password><phone>3135551212</phone><email>vantuanxyz741@gmail.com</email><cart /></user></users>
+
+    <products>
+        <product>
+            <name>leo123</name>
+            <id>SP001</id>
+            <des>des</des>
+            <price>2000</price>
+            <quantity>2</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+        </product>
+
+        <product>
+            <name>sasdas123</name>
+            <id>628303187370654376</id>
+            <des>lep2</des>
+            <price>12312424</price>
+            <quantity>2323</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+        </product>
+        <product>
+            <name>tuan leo2</name>
+            <id>250368085760903726</id>
+            <des>lep</des>
+            <price>2300</price>
+            <quantity>232</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+        </product>
+        <product>
+            <name>sasdas1232424</name>
+            <id>307030991863649868</id>
+            <des>lep2</des>
+            <price>12312424</price>
+            <quantity>2323</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+        </product>
+        <product>
+            <name>tuan leo2</name>
+            <id>27781886527267287</id>
+            <des>lep</des>
+            <price>2300</price>
+            <quantity>232</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+        </product>
+    <product><name>123</name><des>lep</des><price>2300</price><quantity>30000</quantity><totalCartQuantity>0</totalCartQuantity><id>717181825423411012</id></product></products>
+
+</shop>
