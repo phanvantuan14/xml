@@ -1,1 +1,1 @@
-export * from './Contex';
+export * from './Context';

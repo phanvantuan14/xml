@@ -5,19 +5,31 @@ import { Context } from '../context';
 import { OrderCard } from './OrderCard';
 import { totalPrice } from '../utils';
 import { useCreateDate } from '../hooks';
+
 import './styles.css';
 
 export const CheckoutSideMenu = () => {
 
     const context = useContext(Context);
-    //console.log(context.cartProducts);
-
     const date = useCreateDate();
+    // const email = localStorage.getItem('email');
 
-    const handleDelete = (id) => {
+    const handleDelete = async(id) => {
+        console.log("DELETE" + id);
         const filteredProducts = context.cartProducts.filter(prod => prod.id != id);
         context.setCartProducts(filteredProducts);
+        // try {
+        //     const response = await deleteProductInCart(email, id);
+        //     if (response) {
+        //         console.log('Delete successful');
+        //     } else {
+        //         setError(response.data.error);
+        //     }
+        // } catch (error) {
+        //     console.error('An error occurred:', error);
+        // }
     }
+    
 
     const handleCheckout = () => {
         const orderToAdd = {
@@ -31,10 +43,7 @@ export const CheckoutSideMenu = () => {
         context.setOrder([...context.order, orderToAdd]);
         context.setCartProducts([]);
         context.closeCheckoutSideMenu();
-        //context.setSearchByTitle(null);
     }
-
-    //console.log(context.cartProducts[0].images[0])
 
     return (
         <aside

@@ -1,5 +1,9 @@
 import API from "../config/axios";
 
+export const login = (email, password) => {
+  return API.post(`/login`, { email, password });
+};
+
 export const getProducts = () => {
     return API.get("/products")
 }
@@ -30,4 +34,24 @@ export const getUsers = () => {
 
 export const updateUser = (data) => {
   return API.put(`/users/${data.email}`, data);
+};
+
+export const deleteUser = (email) => {
+  return API.delete(`/users/${email}`);
+};
+
+export const addProductToCart = (email, product_id) => {
+  return API.post(`/cart/${email}/${product_id}`);
+};
+
+// export const getProductInCart = () => {
+//   return API.get(`/cart`);
+// };
+
+export const updateProductInCart = (data) => {
+  return API.put(`/cart/${data.email}`, data);
+};
+
+export const deleteProductInCart = (email, product_id) => {
+  return API.delete(`/cart/${email}/${product_id}`);
 };

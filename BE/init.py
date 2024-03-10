@@ -7,7 +7,8 @@ from CartRePo import CartRepo
 from ProductRepo import ProductRepo
 
 
-FILE_PATH = "../data/shop.xml"
+# FILE_PATH = "/data/shop.xml"
+FILE_PATH = "data/shop.xml"
 tree = ET.parse(FILE_PATH)
 
 root = tree.getroot()
@@ -22,7 +23,6 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route("/products")
-
 def getProduct():
     search = request.args.get("search")
     if(search == None):
@@ -63,6 +63,22 @@ def updateProduct(id):
        return jsonify({"message": "Failed to update product"}), 404
 
 # Định tuyến người dùng
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    authenticated = userRepo.login(email, password)
+
+    if authenticated:
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid email or password'}), 401
+
+
+
+
 @app.route("/users")
 def getUsers():
     search = request.args.get("search")
@@ -81,14 +97,14 @@ def createUser():
         print(e)
         return jsonify({"message": "Failed to create user"}), 404
 
-@app.route("/users/delete/<id>", methods=['DELETE'])
-def deleteUser(id):
-    try:
-        userRepo.deleteUser(id)
-        return jsonify({"message": "User deleted successfully"})
-    except Exception as e:
-        print(e)
-        return jsonify({"message": "Failed to delete user"}), 404
+@app.route('/users/<email>', methods=['DELETE'])
+def delete_user(email):
+    if email is None:
+        return jsonify({'error': 'Email parameter is missing'}), 400
+    element_removed = userRepo.deleteUserByEmail(email)
+    if element_removed is None:
+        return jsonify({'error': 'User not found'}), 404
+    return jsonify({'message': 'User deleted successfully', 'deleted_user': element_removed}), 200
 
 @app.route("/users/<email>", methods=['PUT'])
 def updateUser(email):
@@ -103,36 +119,37 @@ def updateUser(email):
         return jsonify({"message": "Failed to update user"}), 404
 
 
+
 # Định tuyến giỏ hàng
+@app.route("/cart/<email>/<product_id>", methods=['POST'])
+def addToCart(email, product_id): 
+    success, message = cartRepo.addProductToCart(email, product_id)
+    if success:
+        return jsonify({"message": message}), 201
+    else:
+        return jsonify({"message": message}), 400
 
-@app.route("/cart/add", methods=['POST'])
-def add_product_to_cart():
-    try:
-        data = request.get_json()
-        cartRepo.addProduct(data)
-        return jsonify({"message": "Product added to cart successfully"})
-    except Exception as e:
-        return jsonify({"message": "Failed to add product to cart"}), 404
 
-@app.route("/cart/update", methods=['PUT'])
-def update_product_in_cart():
-    try:
-        data = request.get_json()
-        result = cartRepo.updateProduct(data)
-        return jsonify(result)
-    except Exception as e:
-        return jsonify({"message": "Failed to update product in cart"}), 404
+# @app.route("/cart/update", methods=['PUT'])
+# def update_product_in_cart():
+#     try:
+#         data = request.get_json()
+#         result = cartRepo.updateProduct(data)
+#         return jsonify(result)
+#     except Exception as e:
+#         return jsonify({"message": "Failed to update product in cart"}), 404
 
-@app.route("/cart/delete/<product_id>", methods=['DELETE'])
-def delete_product_from_cart(product_id):
+@app.route("/cart/<user_id>/<product_id>", methods=['DELETE'])
+def deleteProductInCart(user_id, product_id):
     try:
-        result = cartRepo.deleteProduct(product_id)
-        if result:
-            return jsonify({"message": "Product deleted from cart successfully"})
+        success, message = cartRepo.deleteProductInCart(user_id, product_id)
+        
+        if success:
+            return jsonify({"message": message}), 200  
         else:
-            return jsonify({"message": "Product not found in cart"}), 404
+            return jsonify({"message": message}), 404  # Trả về mã 404 nếu không tìm thấy người dùng hoặc sản phẩm
     except Exception as e:
-        return jsonify({"message": "Failed to delete product from cart"}), 404
+        return jsonify({"message": "Failed to delete product"}), 400
  
 
 if __name__ == '__main__':

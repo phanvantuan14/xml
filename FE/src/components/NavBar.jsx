@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext,  useState} from 'react';
 import { Context } from '../context';
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
 
@@ -8,6 +8,16 @@ const activeStyle = "underline underline-offset-4";
 export const NavBar = () => {
 
     const context = useContext(Context);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const email = localStorage.getItem('email');
+
+    const handleLogout = () => {
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+        localStorage.removeItem('comprarShopi');
+        console.log("Logout")
+        setIsLoggedIn(false);
+    };
 
     return (
         <nav className='flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light fondo'>
@@ -81,18 +91,19 @@ export const NavBar = () => {
             </ul>
 
             <ul className='flex items-center gap-3'>
-                <li className='text-black/60'>
-                    silvi@platzi.com
-                </li>
+
+                {email ? (
+                    <li className='text-black/60'>Email: {email}</li>
+                ) : (
+                    <li>
+                        <NavLink to='/sign-in' className={({isActive}) => isActive ? activeStyle : undefined}>Sign in</NavLink>
+                    </li>
+                )}
+
                 <li>
                     <NavLink to='/dashboard' className={({isActive}) => isActive ? activeStyle : undefined}>ADMIN</NavLink>
                 </li>
-                {/* <li>
-                    <NavLink to='/account' className={({isActive}) => isActive ? activeStyle : undefined}>Account</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/sign-in' className={({isActive}) => isActive ? activeStyle : undefined}>Sign in</NavLink>
-                </li> */}
+                
                 <li className='flex'>
                     <NavLink to='/cart-shopping' className={({isActive}) => isActive ? activeStyle : undefined}>
                         <ShoppingCartIcon className='h-5 w-5 text-black'></ShoppingCartIcon>
@@ -104,6 +115,11 @@ export const NavBar = () => {
                             <div className='flex justify-center items-center bg-green-100 w-5 h-5 rounded-full text-xs font-semibold'>{context.productsCount}</div>
                     }
                 </li>
+                {isLoggedIn && (  
+                    <li className='ml-5'>
+                        <button onClick={handleLogout}>Logout</button>
+                    </li>
+                )}
             </ul>
         </nav>
     )

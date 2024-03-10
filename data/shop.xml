@@ -1,28 +1,49 @@
 <shop>
     <users>
         <user>
-            <name>leo2</name>
-            <age>32</age>
-            <phone>3135551212</phone>
-            <email>vantuanxyz741@gmail.com</email>
-            <password>1234565gyyg2</password>
-            <cart>
-               
-            </cart>
-        </user>
-
-
-        <user>
             <name>Nguyen Van A</name>
             <age>25</age>
             <phone>3135551214</phone>
             <email>abc@example.com</email>
-            <password>pass123</password>
+            <password>pass123a</password>
             <cart>
-                
+
             </cart>
         </user>
-    <user><name>leo3</name><age>2</age><password>password</password><phone>3135551212</phone><email>vantuanxyz741@gmail.com</email><cart /></user></users>
+        <user>
+            <name>leo3</name>
+            <age>2</age>
+            <password>password</password>
+            <phone>3135551212</phone>
+            <email>vantuanxyz741@gmail.com</email>
+            <cart>
+                <product>
+                    <id>27781886527267287</id>
+                    <name>tuan leo2</name>
+                    <des>lep</des>
+                    <price>2300</price>
+                    <quantity>1</quantity>
+                    <totalCartQuantity>0</totalCartQuantity>
+                </product>
+                </cart>
+        </user>
+        <user>
+            <name>phan tuan</name>
+            <age>23</age>
+            <password>1234565gyyg2</password>
+            <phone>3135551212</phone>
+            <email>dfccc@gmail.com</email>
+            <cart />
+        </user>
+        <user>
+            <name>Nguyen Van C</name>
+            <age>25</age>
+            <password>pass123a</password>
+            <phone>3135551214</phone>
+            <email>abcD@example.com</email>
+            <cart />
+        </user>
+    </users>
 
     <products>
         <product>
@@ -66,6 +87,14 @@
             <quantity>232</quantity>
             <totalCartQuantity>0</totalCartQuantity>
         </product>
-    <product><name>123</name><des>lep</des><price>2300</price><quantity>30000</quantity><totalCartQuantity>0</totalCartQuantity><id>717181825423411012</id></product></products>
+        <product>
+            <name>123</name>
+            <des>lep</des>
+            <price>2300</price>
+            <quantity>30000</quantity>
+            <totalCartQuantity>0</totalCartQuantity>
+            <id>717181825423411012</id>
+        </product>
+    </products>
 
 </shop>

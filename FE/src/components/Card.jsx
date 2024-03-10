@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { Context } from '../context';
 import { PlusIcon, CheckIcon } from '@heroicons/react/24/solid';
+import {addProductToCart} from '../apis'
 import { CiTrash } from "react-icons/ci";
 import './styles.css'
 
@@ -17,7 +18,19 @@ export const Card = ({ item, onDelete, onClick = () => {}}) => {
         context.setShowProductDetail(productDetail);
     }
 
-    const addProductsToCart = (productData) => {
+    const addProductsToCart = async(productData) => {
+        try {
+            const email = localStorage.getItem('email');
+            const productId = productData.id
+            const response = await addProductToCart(email, productId);
+            if (response) {
+                console.log('Add successful');
+            } else {
+                setError(response.data.error);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
         context.setCartProducts([...context.cartProducts, productData]);
         context.closeProductDetail();
         context.openCheckoutSideMenu();

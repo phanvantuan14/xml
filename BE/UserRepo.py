@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import uuid;
+import hashlib
 
 class UserRepo():
     def __init__(self, root: ET.Element, tree: ET.ElementTree, FILE_PATH):
@@ -17,6 +18,20 @@ class UserRepo():
             if child.tag != item.tag:
                 values[child.tag] = child.text
         return values
+    
+    def login(self, email: str, password: str):
+
+        for user in self.treeElement.iterfind("user"):
+            user_email = user.find("email").text
+            password_db = user.find("password").text
+
+            if user_email == email:
+                if password_db == password:
+                    return True  
+                else:
+                    return False  
+        return False
+ 
     
     def getUsers(self):
         users = []
@@ -36,25 +51,18 @@ class UserRepo():
         ET.dump(newNode)
         self.treeElement.append(newNode)
         self.writeFile()
-
-    def deleteUser(self, id: str):
+    
+    def deleteUserByEmail(self, email: str):
         elementRemoved = None
         for user in self.treeElement.iterfind("user"):
-            if user.find("id").text == id:
+            if user.find("email").text == email:
                 elementRemoved = self.toDict(user)
                 self.treeElement.remove(user)
                 self.writeFile()
+                break  # Dừng vòng lặp sau khi xóa người dùng
         return elementRemoved
 
-    def findUserById(self, id: str):
-         for user in self.treeElement.iterfind("user"):
-             if user.find("id").text == id: 
-                 return self.toDict(user)
-    
-    def findUserByEmail(self, email: str):
-        for user in self.treeElement.iterfind("user"):
-            if user.find("email").text == email:
-                return self.toDict(user)
+
     
     def updateUser(self, id: str, data: dict):
         for user in self.treeElement.iterfind("user"):

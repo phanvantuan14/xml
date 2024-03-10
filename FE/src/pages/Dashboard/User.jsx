@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Layout } from "../../components";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUsers, newUser, updateUser } from "../../apis";
+import { getUsers, newUser, updateUser, deleteUser } from "../../apis";
 import { toast } from "react-toastify";
 import { CiTrash } from "react-icons/ci";
 import { useEffect } from "react";
@@ -39,6 +39,16 @@ function User() {
     refetchOnWindowFocus: false,
   });
 
+  const handleDeleteUser = async (email) => {
+    try {
+      await deleteUser(email);
+      toast.success("User deleted successfully");
+      refetch();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -74,7 +84,7 @@ function User() {
       <div className="mx-auto container">
         <div>User</div>
         <div className="grid grid-cols-12">
-            <div className="col-span-8">
+          <div className="col-span-8">
             <table className="min-w-full text-left text-sm font-light">
               <thead className="border-b font-medium dark:border-neutral-500">
                 <tr>
@@ -88,30 +98,32 @@ function User() {
               </thead>
               <tbody>
                 {
-                    (userData?.data || []).map((user, index) => {
-                        const {name, age, phone, email} = user;
-                        return (
-                            <tr role="button" onClick={() => onSelect(user)} key={user?.email} className=" cursor-pointer border-b dark:border-neutral-500">
-                                <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{name}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{age}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{email}</td>
-                                <td className="whitespace-nowrap px-6 py-4">{phone}</td>
-                                <td className="whitespace-nowrap px-6 py-4">
-                                <button className="p-2 bg-black rounded-md">
-                                    <CiTrash className="  text-xl text-white hover:animate-bounce"/>
-                                </button>
-                                </td>
-                             
-                          </tr>
-                        )
-                    })
+                  (userData?.data || []).map((user, index) => {
+                    const { name, age, phone, email } = user;
+                   
+                    return (
+                      <tr role="button" onClick={() => onSelect(user)} key={user?.email} className=" cursor-pointer border-b dark:border-neutral-500">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{name}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{age}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{email}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{phone}</td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <button className="p-2 bg-black rounded-md" onClick={() => 
+                            handleDeleteUser(email)}>
+                            <CiTrash className="text-xl text-white hover:animate-bounce" />
+                          </button>
+                        </td>
+
+                      </tr>
+                    )
+                  })
                 }
-             
-                
+
+
               </tbody>
             </table>
-            </div>
+          </div>
           <div className=" col-span-4">
             <form action="">
               <div className="px-5 pb-5">
@@ -132,8 +144,8 @@ function User() {
                       message: "Age is required",
                     },
                     min: {
-                        value: 1,
-                        message: "Age must be greater than 1"
+                      value: 1,
+                      message: "Age must be greater than 1"
                     },
                     valueAsNumber: true
                   })}
@@ -141,7 +153,7 @@ function User() {
                   className=" text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                 />
 
-                 <input
+                <input
                   {...register("password", {
                     required: {
                       value: true,
